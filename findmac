@@ -1,0 +1,47 @@
+#Globals###############################################################################################################
+#######################################################################################################################
+
+:global MAC 44:6D:6C:C2:CA:F6;					
+:global DarkTime;
+:global MacOnline;
+:global Marker
+
+
+
+#### load Functions
+:system script run functions; 
+
+###Functions
+:global PlayMusic
+:global DarkTimeCheck
+:global MacOnlineCheck
+:global MarkerCheck
+:global MarkerAdd
+:global MarkerDel
+:global MonitorOff
+:global MonitorOn
+
+
+#Script################################################################################################################
+#######################################################################################################################
+
+$MarkerCheck;
+
+if ( $Marker ) do={ :error "we already know , mac is registred" }
+
+$DarkTimeCheck;
+
+if ( $DarkTime = false ) do={ :error "it's too early for this" }
+
+
+$MacOnlineCheck;
+
+if ( $MacOnline ) do={  
+						:execute { /system script run LampOn };
+						$MarkerAdd
+						$PlayMusic;
+						:global OfflineCount 0;
+						$MonitorOn; 
+						} else={ :error "mac not found" };
+						
+#######################################################################################################################

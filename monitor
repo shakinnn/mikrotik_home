@@ -1,0 +1,35 @@
+#Globals###############################################################################################################
+#######################################################################################################################
+:global OfflineCount;
+:global MacOnline;
+
+###Functions
+:global PlayMusic
+:global DarkTimeCheck
+:global MacOnlineCheck
+:global MarkerCheck
+:global MarkerAdd
+:global MarkerDel
+:global MonitorOff
+:global MonitorOn
+ 
+ 
+
+##Script################################################################################################################
+########################################################################################################################
+$MarkerCheck
+:if ( $Marker = false ) do={ 
+							$MonitorOff;
+							:error "marker does not exist" ; 
+							};
+
+:if ( $OfflineCount >= 20 ) do={
+								$MarkerDel;
+								$MonitorOff;
+								:error "mac is offline too long time, marker was deleted " ;
+								};
+
+$MacOnlineCheck								
+:if ( $MacOnline ) do={ :global OfflineCount 0;
+						:error "good mac is Online" ;
+						} else={ :global OfflineCount ( $OfflineCount + 1 ) };

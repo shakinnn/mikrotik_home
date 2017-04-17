@@ -1,0 +1,132 @@
+##Functions############################################################################################################
+#######################################################################################################################
+:global PlayMusic
+:global DarkTimeCheck
+:global MacOnlineCheck
+:global MarkerCheck
+:global MarkerAdd
+:global MarkerDel
+:global MonitorOff
+:global MonitorOn
+#######################################################################################################################
+
+:global PlayMusic do=	{
+						:beep frequency=500 length=500ms;
+						:delay 500ms;
+						:beep frequency=500 length=500ms;
+						:delay 500ms;
+						:beep frequency=500 length=500ms;
+						:delay 500ms;
+						:beep frequency=400 length=500ms;
+						:delay 400ms;
+						:beep frequency=600 length=200ms;
+						:delay 100ms;
+						:beep frequency=500 length=500ms;
+						:delay 500ms;
+						:beep frequency=400 length=500ms;
+						:delay 400ms;
+						:beep frequency=600 length=200ms;
+						:delay 100ms;
+						:beep frequency=500 length=500ms;
+						:delay 1000ms;
+
+
+						:beep frequency=750 length=500ms;
+						:delay 500ms;
+						:beep frequency=750 length=500ms;
+						:delay 500ms;
+						:beep frequency=750 length=500ms;
+						:delay 500ms;
+						:beep frequency=810 length=500ms;
+						:delay 400ms;
+						:beep frequency=600 length=200ms;
+						:delay 100ms;
+						:beep frequency=470 length=500ms;
+						:delay 500ms;
+						:beep frequency=400 length=500ms;
+						:delay 400ms;
+						:beep frequency=600 length=200ms;
+						:delay 100ms;
+						:beep frequency=500 length=500ms;
+						:delay 1000ms;
+						}
+#Play StarWars music
+#$PlayMusic;
+
+#######################################################################################################################
+
+:global DarkTimeCheck do={
+							:local Hour [: pick [system clock get time] 0 2];
+							:global DarkTime;
+							:if ([:pick [system clock get date] 0 3] = "jan") do={ :global DarkTime 17 };
+							:if ([:pick [system clock get date] 0 3] = "feb") do={ :global DarkTime 18 };
+							:if ([:pick [system clock get date] 0 3] = "mar") do={ :global DarkTime 19 };
+							:if ([:pick [system clock get date] 0 3] = "apr") do={ :global DarkTime 20 };
+							:if ([:pick [system clock get date] 0 3] = "may") do={ :global DarkTime 21 };
+							:if ([:pick [system clock get date] 0 3] = "jun") do={ :global DarkTime 22 };
+							:if ([:pick [system clock get date] 0 3] = "jul") do={ :global DarkTime 21 };
+							:if ([:pick [system clock get date] 0 3] = "aug") do={ :global DarkTime 20 };
+							:if ([:pick [system clock get date] 0 3] = "sep") do={ :global DarkTime 19 };
+							:if ([:pick [system clock get date] 0 3] = "oct") do={ :global DarkTime 18 };
+							:if ([:pick [system clock get date] 0 3] = "nov") do={ :global DarkTime 17 };
+							:if ([:pick [system clock get date] 0 3] = "dec") do={ :global DarkTime 16 };
+													
+							:global DarkTime ($Hour >= $DarkTime and $Hour <= 23 or $Hour >= 0 and $Hour <= 3); 
+						}	
+#update global var DarkTime (false/true)
+#$DarkTimeCheck
+
+#######################################################################################################################
+
+:global MacOnlineCheck do={
+						:global MAC;
+						:global MacOnline ( [:len [interface wireless registration-table  find mac-address=$MAC]] > 0);
+						}
+
+#update global var DarkTime (false/true)
+#$MacOnlineCheck
+
+#######################################################################################################################
+
+:global MarkerCheck do={
+						:global Marker ( [:len [ip firewall address-list  find address=222.222.222.222 ]] > 0 );
+						}
+						
+#update global var Marker (false/true)
+#$MarkerCheck
+
+#######################################################################################################################
+
+:global MarkerAdd do={
+						ip firewall address-list add dynamic=yes address=222.222.222.222 list=timer timeout=08:00:00;
+						}
+#Create in address-list IP 222.222.222.222 with TTL 8hours
+#$MarkerAdd
+
+#######################################################################################################################
+
+:global MarkerDel do={
+						ip firewall address-list remove [find address=222.222.222.222]
+						}
+#Delete IP 222.222.222.222 from address-list
+#$MarkerDel
+
+					
+#######################################################################################################################
+
+:global MonitorOff do={
+						system scheduler disable monitor 
+						}
+#Disable "monitor" scheduler task  
+#$MonitorOff;
+
+#######################################################################################################################
+
+:global MonitorOn do={
+						system scheduler enable monitor 
+						}
+#Enable "monitor" scheduler task  
+#$MonitorOn;
+
+#######################################################################################################################
+
